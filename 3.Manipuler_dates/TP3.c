@@ -73,10 +73,10 @@ void afficheDate(Date* d){
 
 int main(void){
     Date d;
-    initialiseDate(&d);
-    afficheDate(&d);
-    d = creerDateParCopie();
-    afficheDate(&d);
+    //initialiseDate(&d);
+    //afficheDate(&d);
+    //d = creerDateParCopie();
+    //afficheDate(&d);
 
     Date *date;
     date = newDate();
