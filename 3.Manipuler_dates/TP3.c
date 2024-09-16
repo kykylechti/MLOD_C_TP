@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-enum Mois{
-    Janvier,
+typedef enum {
+    Janvier=1,
     Fevrier,
     Mars,
     Avril,
@@ -13,26 +13,31 @@ enum Mois{
     Octobre,
     Novembre,
     Decembre
-}
+}Mois;
 
-Struct Date {
+struct Date {
     int day;
     Mois mois; 
     int year;
+};
+
+void initialiseDate(struct Date* d){
+    int tmp=0;
+    printf("Jour : ");
+    scanf("%d", &d->day);
+    printf("Mois : ");
+    scanf("%d", &tmp);
+    d->mois = (Mois)tmp;
+    printf("Année : ");
+    scanf("%d", &d->year);
 }
 
-void initialiseDate(Date* d){
-    d->day = 00;
-    d->mois = Janvier;
-    d->year = 0000;
-}
-
-void afficheDate(Date* d){
-    printf("%d/%s/%d", d->day, d->mois, d->year);
+void afficheDate(struct Date* d){
+    printf("%d/%d/%d", d->day, d->mois, d->year);
 }
 
 int main(void){
-    Date d;
+    struct Date d;
     initialiseDate(&d);
     afficheDate(&d);
     return 0;
