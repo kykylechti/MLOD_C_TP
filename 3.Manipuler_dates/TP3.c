@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 //énumération des mois de l'année
 typedef enum {
@@ -34,7 +35,6 @@ void initialiseDate(Date* d){
     d->mois = (Mois)tmp;
     printf("Année : ");
     scanf("%d", &d->year);
-    printf("\n");
 }
 
 //Initialisation d'une date par copie
@@ -48,13 +48,27 @@ Date creerDateParCopie(){
     t.mois = (Mois)tmp;
     printf("Année : ");
     scanf("%d", &(t.year));
-    printf("\n");
+    return t;
+}
+
+//Création d'une date par malloc
+Date* newDate(){
+    Date* t = malloc(sizeof(Date));
+    int tmp=0;
+    printf("Jour : ");
+    scanf("%d", &t->day);
+    printf("Mois : ");
+    scanf("%d", &tmp);
+    t->mois = (Mois)tmp;
+    printf("Année : ");
+    scanf("%d", &t->year);
     return t;
 }
 
 //Affichage de la date 
 void afficheDate(Date* d){
     printf("%d/%d/%d", d->day, d->mois, d->year);
+    printf("\n");
 }
 
 int main(void){
@@ -63,5 +77,10 @@ int main(void){
     afficheDate(&d);
     d = creerDateParCopie();
     afficheDate(&d);
+
+    Date *date;
+    date = newDate();
+    afficheDate(date);
+    free(date);
     return 0;
 }
