@@ -81,6 +81,6 @@ int main(void){
     Date *date;
     date = newDate();
     afficheDate(date);
-    free(date);
+    free(date);date=NULL;
     return 0;
 }
