@@ -5,8 +5,7 @@
 #include <assert.h>
 
 //Fonction permettant de calculer la taille d'un fichier
-int nbLigneFichier(char* filepath){
-    FILE* f = fopen(filepath, "r");
+int numberOfWinners(FILE* f){
     int tailleFichier = 0;
     int maxline = 1024; 
     char* line = malloc(maxline*sizeof(char));
@@ -16,8 +15,27 @@ int nbLigneFichier(char* filepath){
         tailleFichier++;
     }
 
-    fclose(f);
     return tailleFichier;
+}
+
+//Fonction permettant de stocker en mémoire les informations du fichier en paramètre
+char** readWinners(FILE* f, int* nbLigne){
+    int maxline = 1024; 
+    char* line = malloc(maxline*sizeof(char));
+    *nbLigne = numberOfWinners(f);
+    
+    //Retour au début du fichier
+    fseek(f, 0, 0);
+
+    char** res = malloc((*nbLigne)*sizeof(*res));
+    for(int i = 0; i<(*nbLigne); i++){
+        //Allocation de la mémoire
+        res[i]=malloc(maxline*sizeof(char));
+        //Lecture depuis le fichier
+        fgets(res[i], maxline, f);
+    }
+
+    return res;
 }
 
 int main(void){
@@ -27,18 +45,25 @@ int main(void){
 	char outputFilename[] = "out.csv";
 
     int maxline = 1024;
-    int tailleFichier=1;
+    int tailleFichier=0;
 
     FILE* f = fopen(filename, "r");
     FILE* output = fopen(outputFilename, "r");
     char* line = malloc(maxline*sizeof(char));
 
-    printf(" %s \n", fgets(line, maxline, f));
-    fwrite(line, sizeof(char), maxline, output);
-    
-    
-    printf("Nombre de ligne dans le fichier : %d \n", nbLigneFichier(filename));
+    char** test = readWinners(f, &tailleFichier);
 
+    for(int i = 0; i<tailleFichier; i++){
+        printf("%s", test[i]);
+    }
+    
+    printf("\n Nombre de ligne dans le fichier : %d \n", tailleFichier);
+
+
+    for(int i = 0; i<tailleFichier; i++){
+        free(test[i]);
+    }
+    free(test);
     free(line);
     fclose(f);
     fclose(output);
