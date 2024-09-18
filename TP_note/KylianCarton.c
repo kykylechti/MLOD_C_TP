@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 //Fonction permettant de calculer la taille du tableau qu'il sera nécessaire de créer pour la fonction repeat
-int sizeTab(int taille, int tab[taille]){
+int sizeTab(int taille, int tab[]){
     int total = 0;
     for(int i=0;i<taille;i++){
         total += tab[i];
@@ -12,10 +12,9 @@ int sizeTab(int taille, int tab[taille]){
     return total;
 }
 
-int* repeat(int t1[], int t2[], int taille){
+int* repeat(int t1[], int t2[], int taille, int tailleRes){
 
     //Déclaration des variables
-    int tailleRes = sizeTab(taille, t1);
     int index = 0;
 
     //Allocation de la mémoire pour le tableau dont on va renvoyer l'adresse
@@ -39,12 +38,13 @@ int main(void){
     int tailleTab = 3;
     int t1[] = {2,5,1};
     int t2[] = {1,0,7};
+    int tailleRes = sizeTab(tailleTab, t1);
 
     //Appel à la fonction repeat en récupérant l'adresse du premier élément du tableau
-    int *t = repeat(t1, t2, tailleTab);
+    int *t = repeat(t1, t2, tailleTab, tailleRes);
 
     //Affichage de la fonction repeat
-    for(int i = 0; i < sizeTab(tailleTab, t1); i++){
+    for(int i = 0; i < tailleRes; i++){
         printf(" %d -> ", t[i]);
     }
 
