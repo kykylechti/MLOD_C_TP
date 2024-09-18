@@ -4,6 +4,14 @@
 #include <errno.h>
 #include <assert.h>
 
+struct prixTuring
+{
+    int annee;
+    char* nom;
+    char* sujet;
+};
+
+
 //Fonction permettant de calculer la taille d'un fichier
 int numberOfWinners(FILE* f){
     int tailleFichier = 0;
@@ -19,20 +27,20 @@ int numberOfWinners(FILE* f){
 }
 
 //Fonction permettant de stocker en mémoire les informations du fichier en paramètre
-char** readWinners(FILE* f, int* nbLigne){
-    int maxline = 1024; 
-    char* line = malloc(maxline*sizeof(char));
-    *nbLigne = numberOfWinners(f);
+struct prixTuring* readWinners(FILE* f){
+    int nbLigne = numberOfWinners(f);
+    struct prixTuring* res = malloc(nbLigne*sizeof(struct prixTuring));
     
     //Retour au début du fichier
     fseek(f, 0, 0);
+    char curseur;
+    char* temp;
 
-    char** res = malloc((*nbLigne)*sizeof(*res));
     for(int i = 0; i<(*nbLigne); i++){
-        //Allocation de la mémoire
-        res[i]=malloc(maxline*sizeof(char));
-        //Lecture depuis le fichier
-        fgets(res[i], maxline, f);
+        curseur = getc(f)
+        while(curseur!=';'){
+
+        }
     }
 
     return res;
