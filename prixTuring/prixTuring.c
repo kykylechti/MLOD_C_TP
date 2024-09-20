@@ -95,6 +95,25 @@ prixTuring* readWinners(FILE* f, int* tailleFichier){
     return res;
 }
 
+void printWinners(FILE* f, prixTuring* prix, int taille){
+    char* convert = malloc(5*sizeof(char));
+    for(int i = 0; i<taille;i++){
+        sprintf(convert, "%d", prix[i].annee);
+
+        char pv[] = ";";
+        char rl[] = "\n";
+
+        strcat(prix[i].nom, pv);
+        strcat(prix[i].sujet, rl);
+        strcat(convert, pv);
+
+        fputs(convert, f);
+        fputs((prix[i].nom), f);
+        fputs((prix[i].sujet), f);
+    }
+    free(convert);
+}
+
 int main(void){
 
     //Chemin d'accès aux fichiers
@@ -105,7 +124,7 @@ int main(void){
     int tailleFichier=0;
 
     FILE* f = fopen(filename, "r");
-    FILE* output = fopen(outputFilename, "r");
+    FILE* output = fopen(outputFilename, "w");
     char* line = malloc(maxline*sizeof(char));
 
     prixTuring* test = readWinners(f, &tailleFichier);
@@ -113,6 +132,8 @@ int main(void){
     for(int i = 0; i<tailleFichier; i++){
         affichagePrixTuring(test[i]);
     }
+
+    printWinners(output, test, tailleFichier);
     
     printf("\n Nombre de ligne dans le fichier : %d \n", tailleFichier);
 
