@@ -27,7 +27,7 @@ int numberOfWinners(FILE* f){
 }
 
 void affichagePrixTuring(prixTuring prix){
-    printf("%s;%s;%s", prix.annee, prix.nom, prix.sujet);
+    printf("%d - %s - %s \n", prix.annee, prix.nom, prix.sujet);
 }
 
 int recupererDate(FILE* f, char tab[10000]){
@@ -60,15 +60,16 @@ char* recupererSujet(FILE* f, char tab[10000]){
     }
     int debut = 0; 
     int i=0;
-    while((tab[debut]!=';')||(i<1)){
+    while((tab[debut]!=';')||(i<2)){
         debut++;
-        if(tab[debut] == ';'){i++;}
+        if(tab[debut]==';'){i++;}
     }
+    debut++;
     char* res = malloc((fin-debut+1)*sizeof(char));
     for(int j=0;j<fin-debut;j++){
         res[j]=tab[debut+j];
     }
-    res[fin-debut+1]='\0';
+    res[fin-debut]='\0';
     return res;
 }
 
@@ -114,6 +115,11 @@ int main(void){
     }
     
     printf("\n Nombre de ligne dans le fichier : %d \n", tailleFichier);
+
+    for(int i=0;i<tailleFichier;i++){
+        free(test[i].nom);
+        free(test[i].sujet);
+    }
 
     free(test);
     free(line);
