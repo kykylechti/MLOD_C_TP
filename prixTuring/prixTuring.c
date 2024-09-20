@@ -16,7 +16,7 @@ typedef struct
 int numberOfWinners(FILE* f){
     int tailleFichier = 0;
     int maxline = 1024; 
-    char* line = malloc(maxline*sizeof(char));
+    char line[maxline]; // C99
 
     while(feof(f)==0){
         fgets(line, maxline, f);
@@ -30,7 +30,7 @@ void affichagePrixTuring(prixTuring prix){
     printf("%d - %s - %s \n", prix.annee, prix.nom, prix.sujet);
 }
 
-int recupererDate(FILE* f, char tab[10000]){
+int recupererDate(char tab[10000]){
     char res[5];
     for(int i = 0; i<4; i++){
         res[i]=tab[i];
@@ -39,9 +39,8 @@ int recupererDate(FILE* f, char tab[10000]){
     return atoi(res);
 }
 
-char* recupererNom(FILE* f, char tab[10000]){
+char* recupererNom(char tab[10000]){
     int i=5;
-    char curseur;
     while(tab[i]!=';'){
         i++;
     }
@@ -53,7 +52,7 @@ char* recupererNom(FILE* f, char tab[10000]){
     return res;
 }
 
-char* recupererSujet(FILE* f, char tab[10000]){
+char* recupererSujet(char tab[10000]){
     int fin = 0;
     while(tab[fin]!='\n'){
         fin++;
@@ -79,39 +78,24 @@ prixTuring* readWinners(FILE* f, int* tailleFichier){
     prixTuring* res = malloc((*tailleFichier)*sizeof(prixTuring));
     
     //Retour au début du fichier
-    fseek(f, 0, 0);
-    char curseur;
+    rewind(f);
     int i = 0;
-    char* temp;
     char tab[10000];
 
     for(i = 0; i<(*tailleFichier); i++){
         fgets(tab, 10000, f);
-        (res+i)->annee = recupererDate(f, tab);
-        (res+i)->nom = recupererNom(f, tab);
-        (res+i)->sujet = recupererSujet(f, tab);
+        (res+i)->annee = recupererDate(tab);
+        (res+i)->nom = recupererNom(tab);
+        (res+i)->sujet = recupererSujet(tab);
     }
 
     return res;
 }
 
 void printWinners(FILE* f, prixTuring* prix, int taille){
-    char* convert = malloc(5*sizeof(char));
     for(int i = 0; i<taille;i++){
-        sprintf(convert, "%d", prix[i].annee);
-
-        char pv[] = ";";
-        char rl[] = "\n";
-
-        strcat(prix[i].nom, pv);
-        strcat(prix[i].sujet, rl);
-        strcat(convert, pv);
-
-        fputs(convert, f);
-        fputs((prix[i].nom), f);
-        fputs((prix[i].sujet), f);
+        fprintf(f, "%d;%s;%s\n", prix[i].annee,prix[i].nom,prix[i].sujet);
     }
-    free(convert);
 }
 
 int main(void){
@@ -120,30 +104,28 @@ int main(void){
     char filename[] = "turingWinners.csv";
 	char outputFilename[] = "out.csv";
 
-    int maxline = 1024;
     int tailleFichier=0;
 
     FILE* f = fopen(filename, "r");
     FILE* output = fopen(outputFilename, "w");
-    char* line = malloc(maxline*sizeof(char));
+  
+    prixTuring* winners = readWinners(f, &tailleFichier);
 
-    prixTuring* test = readWinners(f, &tailleFichier);
+    printWinners(output, winners, tailleFichier);
 
-    for(int i = 0; i<tailleFichier; i++){
-        affichagePrixTuring(test[i]);
-    }
-
-    printWinners(output, test, tailleFichier);
+    //for(int i = 0; i<tailleFichier; i++){
+        //affichagePrixTuring(test[i]);
+    //}
     
     printf("\n Nombre de ligne dans le fichier : %d \n", tailleFichier);
 
     for(int i=0;i<tailleFichier;i++){
-        free(test[i].nom);
-        free(test[i].sujet);
+        free(winners[i].nom);
+        free(winners[i].sujet);
     }
 
-    free(test);
-    free(line);
+    free(winners);
+    
     fclose(f);
     fclose(output);
     return 0;
