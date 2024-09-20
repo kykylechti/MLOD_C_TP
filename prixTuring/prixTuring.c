@@ -4,12 +4,12 @@
 #include <errno.h>
 #include <assert.h>
 
-struct prixTuring
+typedef struct
 {
     int annee;
     char* nom;
     char* sujet;
-};
+} prixTuring;
 
 
 //Fonction permettant de calculer la taille d'un fichier
@@ -26,21 +26,69 @@ int numberOfWinners(FILE* f){
     return tailleFichier;
 }
 
+void affichagePrixTuring(prixTuring prix){
+    printf("%s;%s;%s", prix.annee, prix.nom, prix.sujet);
+}
+
+int recupererDate(FILE* f, char tab[10000]){
+    char res[5];
+    for(int i = 0; i<4; i++){
+        res[i]=tab[i];
+    }
+    res[4]='\0';
+    return atoi(res);
+}
+
+char* recupererNom(FILE* f, char tab[10000]){
+    int i=5;
+    char curseur;
+    while(tab[i]!=';'){
+        i++;
+    }
+    char* res = malloc((i-5)*sizeof(char));
+    for(int j=0;j<i-5;j++){
+        res[j]=tab[j+5];
+    }
+    res[i-5]='\0';
+    return res;
+}
+
+char* recupererSujet(FILE* f, char tab[10000]){
+    int fin = 0;
+    while(tab[fin]!='\n'){
+        fin++;
+    }
+    int debut = 0; 
+    int i=0;
+    while((tab[debut]!=';')||(i<1)){
+        debut++;
+        if(tab[debut] == ';'){i++;}
+    }
+    char* res = malloc((fin-debut+1)*sizeof(char));
+    for(int j=0;j<fin-debut;j++){
+        res[j]=tab[debut+j];
+    }
+    res[fin-debut+1]='\0';
+    return res;
+}
+
 //Fonction permettant de stocker en mémoire les informations du fichier en paramètre
-struct prixTuring* readWinners(FILE* f){
-    int nbLigne = numberOfWinners(f);
-    struct prixTuring* res = malloc(nbLigne*sizeof(struct prixTuring));
+prixTuring* readWinners(FILE* f, int* tailleFichier){
+    *tailleFichier = numberOfWinners(f);
+    prixTuring* res = malloc((*tailleFichier)*sizeof(prixTuring));
     
     //Retour au début du fichier
     fseek(f, 0, 0);
     char curseur;
+    int i = 0;
     char* temp;
+    char tab[10000];
 
-    for(int i = 0; i<(*nbLigne); i++){
-        curseur = getc(f)
-        while(curseur!=';'){
-
-        }
+    for(i = 0; i<(*tailleFichier); i++){
+        fgets(tab, 10000, f);
+        (res+i)->annee = recupererDate(f, tab);
+        (res+i)->nom = recupererNom(f, tab);
+        (res+i)->sujet = recupererSujet(f, tab);
     }
 
     return res;
@@ -59,18 +107,14 @@ int main(void){
     FILE* output = fopen(outputFilename, "r");
     char* line = malloc(maxline*sizeof(char));
 
-    char** test = readWinners(f, &tailleFichier);
+    prixTuring* test = readWinners(f, &tailleFichier);
 
     for(int i = 0; i<tailleFichier; i++){
-        printf("%s", test[i]);
+        affichagePrixTuring(test[i]);
     }
     
     printf("\n Nombre de ligne dans le fichier : %d \n", tailleFichier);
 
-
-    for(int i = 0; i<tailleFichier; i++){
-        free(test[i]);
-    }
     free(test);
     free(line);
     fclose(f);
