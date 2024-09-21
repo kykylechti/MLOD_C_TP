@@ -39,38 +39,40 @@ int recupererDate(char tab[10000]){
     return atoi(res);
 }
 
-char* recupererNom(char tab[10000]){
+char* recupererNomSujet(char tab[10000], int champVoulu){
+    if(champVoulu==1){
     int i=5;
-    while(tab[i]!=';'){
-        i++;
+        while(tab[i]!=';'){
+            i++;
+        }
+        char* res = malloc((i-5)*sizeof(char));
+        for(int j=0;j<i-5;j++){
+            res[j]=tab[j+5];
+        }
+        res[i-5]='\0';
+        return res;
     }
-    char* res = malloc((i-5)*sizeof(char));
-    for(int j=0;j<i-5;j++){
-        res[j]=tab[j+5];
+    else if(champVoulu==2){
+        int fin = 0;
+        while(tab[fin]!='\n'){
+            fin++;
+        }
+        int debut = 0; 
+        int i=0;
+        while((tab[debut]!=';')||(i<2)){
+            debut++;
+            if(tab[debut]==';'){i++;}
+        }
+        debut++;
+        char* res = malloc((fin-debut+1)*sizeof(char));
+        for(int j=0;j<fin-debut;j++){
+            res[j]=tab[debut+j];
+        }
+        res[fin-debut]='\0';
+        return res;
     }
-    res[i-5]='\0';
-    return res;
 }
 
-char* recupererSujet(char tab[10000]){
-    int fin = 0;
-    while(tab[fin]!='\n'){
-        fin++;
-    }
-    int debut = 0; 
-    int i=0;
-    while((tab[debut]!=';')||(i<2)){
-        debut++;
-        if(tab[debut]==';'){i++;}
-    }
-    debut++;
-    char* res = malloc((fin-debut+1)*sizeof(char));
-    for(int j=0;j<fin-debut;j++){
-        res[j]=tab[debut+j];
-    }
-    res[fin-debut]='\0';
-    return res;
-}
 
 //Fonction permettant de stocker en mémoire les informations du fichier en paramètre
 prixTuring* readWinners(FILE* f, int* tailleFichier){
@@ -85,8 +87,8 @@ prixTuring* readWinners(FILE* f, int* tailleFichier){
     for(i = 0; i<(*tailleFichier); i++){
         fgets(tab, 10000, f);
         (res+i)->annee = recupererDate(tab);
-        (res+i)->nom = recupererNom(tab);
-        (res+i)->sujet = recupererSujet(tab);
+        (res+i)->nom = recupererNomSujet(tab, 1);
+        (res+i)->sujet = recupererNomSujet(tab, 2);
     }
 
     return res;
