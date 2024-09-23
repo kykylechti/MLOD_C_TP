@@ -2,9 +2,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define MAX_LINE_LENGTH (1024)
-#define MAX_LINE_COUNT (299)
-
 void recite(uint8_t start_bottles, uint8_t take_down, char **song){
     for(int i = start_bottles; i>start_bottles-take_down; i--){
         if(i>=2){
