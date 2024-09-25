@@ -118,45 +118,49 @@ Liste cherche_i(Element v,Liste l) {
 
 // version récursive
 Liste cherche_r(Element v,Liste l) {
-	if((l->val!=v) && (l->suiv==NULL)){
-		l=NULL;
+	if(l==NULL){
+		return NULL;
 	}
-	else if((l->val!=v) && (l->suiv!=NULL)){
-		l = cherche_r(v, l->suiv);
-	}
-	return l;
+	if(equalsElement(l->val, v)){
+		return l;
+	} 
+	return cherche_r(v, l->suiv);
 }
 
 // Retourne la liste modifiée dans la laquelle le premier élément ayant la valeur v a été supprimé
 // ne fait rien si aucun élément possède cette valeur
 // version itérative
 Liste retirePremier_i(Element v, Liste l) {
-	Liste res = l; 
-	if(l->val==v){
-		l=l->suiv;
+	Liste curseur = l;
+	if(l==NULL){
+		return NULL;
 	}
-	else {
-		while((res->suiv->val!=v) && (res->suiv->suiv!=NULL)){
-			res=res->suiv;
-		}
-		if(res->suiv->val==v){
-			detruireElement(res->val);
-			res->suiv=res->suiv->suiv;
-		}
-
+    if(equalsElement(l->val, v)){
+        detruireElement(l->val);
+        curseur = l->suiv;
+        free(l); return curseur;
+    }
+	while(curseur->suiv!=NULL && !equalsElement(v, curseur->suiv->val)){
+		curseur = curseur->suiv;
 	}
-	return l;
+	if(equalsElement(v, curseur->suiv->val)){
+		curseur->suiv = curseur->suiv->suiv;
+	}
+	return l; 
 }
 
 
 // version recursive
 Liste retirePremier_r(Element v, Liste l) {
-	if((l->val!=v) && (l->suiv!=NULL)){
-		l->suiv = retirePremier_r(v, l->suiv);
-	} else if (l->val==v){
-		l=l->suiv;
+	if(l==NULL){
+		return NULL;
 	}
-	return l;
+	if(equalsElement(v, l->val)){
+		detruireElement(v);
+		return l->suiv; 
+	}
+	l->suiv = retirePremier_r(v, l->suiv);
+	return l; 
 }
 
 
