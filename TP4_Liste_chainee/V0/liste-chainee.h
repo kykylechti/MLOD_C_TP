@@ -16,6 +16,8 @@ typedef Cellule* Liste;
 // retourne vrai si l est vide et faux sinon
 bool estVide(Liste l);
 
+extern bool equalsElement(Element e1, Element e2);
+
 // créer une liste d'un seul élément contenant la valeur v
 Liste creer(Element v);
 

@@ -19,9 +19,8 @@ Liste creer(Element v){
 
 // ajoute l'élément v en tete de la liste l
 Liste ajoutTete(Element v, Liste l) {
-	Liste res = malloc(sizeof(Cellule));
-	res->val = v; 
-	res->suiv = l;
+	Liste res = creer(v);
+	res->suiv = l; 
 	return res;
 }
 
@@ -73,45 +72,39 @@ void detruire_r(Liste l) {
 // retourne la liste dans laquelle l'élément v a été ajouté en fin
 // version itérative
 Liste ajoutFin_i(Element v, Liste l) {
-	Liste tmp = l;
-	while(tmp->suiv!=NULL){
-		tmp=tmp->suiv;
-	}
-	tmp->suiv=malloc(sizeof(Cellule));
-	tmp=tmp->suiv;
-	tmp->val = v;
-	return l;
+	if(l==NULL){
+        return creer(v);
+    }
+    Liste derniereCellule=l; 
+    while(derniereCellule->suiv!=NULL){
+        derniereCellule=derniereCellule->suiv;
+    }
+    derniereCellule->suiv=creer(v);
+    return l;
 }
 
 // version recursive
 Liste ajoutFin_r(Element v, Liste l) {
-	if(l->suiv!=NULL){
-		l->suiv=ajoutFin_r(v, l->suiv);
-	}
-	else {
-		l->suiv = (Cellule*) malloc(sizeof(Cellule));
-		l->suiv->val=v;
-		l->suiv->suiv=NULL;
-	}
+	if(l==NULL){
+        return creer(v);
+    }
+    l->suiv = ajoutFin_r(v, l->suiv);
 	return l;
 }
 
 // compare deux elements
-bool equalsElement(Element e1, Element e2){
-	return e1 == e2;
-}
+
 
 // Retourne un pointeur sur l'élément de la liste l contenant la valeur v ou NULL
 // version itérative
 Liste cherche_i(Element v,Liste l) {
-	while((l->val!=v) && (l->suiv!=NULL)){
-		l=l->suiv;
+	while(l!=NULL){
+		if(equalsElement(l->val, v)){
+			return l; 
+		}
+		l = l->suiv; 
 	}
-	if(l->val==v){
-		return l;
-	} else {
-		return NULL;
-	}
+	return NULL;
 }
 
 // version récursive
@@ -128,6 +121,19 @@ Liste cherche_r(Element v,Liste l) {
 // Retourne la liste modifiée dans la laquelle le premier élément ayant la valeur v a été supprimé
 // ne fait rien si aucun élément possède cette valeur
 // version itérative
+
+
+// version recursive
+
+
+
+void afficheEnvers_r(Liste l) {
+	if(l->suiv!=NULL){
+		afficheEnvers_r(l->suiv);
+	}
+	afficheElement(l->val);
+}   
+
 Liste retirePremier_i(Element v, Liste l) {
 	Liste res = l; 
 	if(l->val==v){
@@ -156,11 +162,3 @@ Liste retirePremier_r(Element v, Liste l) {
 	}
 	return l;
 }
-
-
-void afficheEnvers_r(Liste l) {
-	if(l->suiv!=NULL){
-		afficheEnvers_r(l->suiv);
-	}
-	afficheElement(l->val);
-}   
