@@ -4,7 +4,7 @@
 #include "linkedListOfMusic.h"
 
 void afficheElement(Element e){
-    printf("%s, %s, dans le genre %s, sur l'album %s, disque numéro %i, track numéro %i, le %i \n", ((Music*)(e))->artist, ((Music*)(e))->name, ((Music*)(e))->genre, ((Music*)(e))->album, ((Music*)(e))->discNumber, ((Music*)(e))->trackNumber, ((Music*)(e))->year);
+    printf("%s, %s, dans le genre %s, sur l'album %s, disque numéro %d, track numéro %d, le %d \n", ((Music*)(e))->artist, ((Music*)(e))->name, ((Music*)(e))->genre, ((Music*)(e))->album, ((Music*)(e))->discNumber, ((Music*)(e))->trackNumber, ((Music*)(e))->year);
 }
 
 bool equalsElement(Element v1, Element v2){
