@@ -4,7 +4,7 @@
 #include <string.h>
 
 bool equalsElement(Element e1, Element e2){
-	return strcmp(e1, e2);
+	return (strcmp(e1, e2))==0;
 }
 
 void afficheElement(Element e){
@@ -59,6 +59,7 @@ int main(void){
 		printf("\n");
 	}
 
+	afficheListe_i(l);
 	printf("retirePremier_i(1)   : ");
 	l = retirePremier_i("1",l);
 	afficheListe_r(l);
