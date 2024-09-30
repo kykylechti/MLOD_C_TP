@@ -10,22 +10,21 @@ int main(void){
 	initialiser(&a);
 	// a = NULL;
 	printf("estVide(a)= %s\n",estVide(a)?"TRUE":"FALSE");
-	a = insere_i(a,5);
-	a = insere_i(a,3);
-	printf("Premier : %d, 2eme : %d \n", a->val, a->filsGauche->val);
-	return 0;
-	printf("nombreDeNoeud(a)= %i\n",nombreDeNoeud(a));
+	//printf("nombreDeNoeud(a)= %i\n",nombreDeNoeud(a));
 
-	a = insere_r(a,5);
+	a = insere_i(a,5);
 	afficheGRD_r(a);printf("\n");
-	a = insere_r(a,3);
+	a = insere_i(a,3);
 	afficheGRD_r(a);printf("\n");
-	a = insere_r(a,2);
+	a = insere_i(a,2);
 	afficheGRD_r(a);printf("\n");
-	a = insere_r(a,3);
+	a = insere_i(a,3);
 	afficheGRD_r(a);printf("\n");
-	a = insere_r(a,1);
+	a = insere_i(a,1);
 	afficheGRD_r(a);printf("\n");
+	a = insere_i(a,6);
+	afficheGRD_r(a);printf("\n");
+	return 0;
 
 	printf("nombreDeNoeud(a)= %i\n",nombreDeNoeud(a));
 
