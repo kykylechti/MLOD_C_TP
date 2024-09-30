@@ -2,15 +2,7 @@
 
 #include <stdbool.h>
 
-typedef struct{
-	char* name;
-	char* artist; 
-	char* album; 
-	char* genre;
-	int discNumber;
-	int trackNumber;
-	int year;
-} Music;
+
 typedef void* Element;
 
 struct cellule_s {
@@ -45,7 +37,7 @@ void afficheListe_i(Liste l);
 // version recursive
 void afficheListe_r(Liste l);
 
-void detruireElement(Element e);
+extern void detruireElement(Element e);
 
 // Détruit tous les éléments de la liste l
 // version itérative

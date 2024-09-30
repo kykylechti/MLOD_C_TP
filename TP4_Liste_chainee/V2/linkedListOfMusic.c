@@ -48,9 +48,6 @@ void afficheListe_r(Liste l) {
 	}
 }
 
-void detruireElement(Element e) {
-	free(e);
-}
 
 // Détruit tous les éléments de la liste l
 // version itérative
